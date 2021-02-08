@@ -1,18 +1,20 @@
 package com.dbc.vitorfurini.assembleiadbc.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 @Entity
-public class Assembleia implements Serializable {
+public class Pauta implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,39 +26,16 @@ public class Assembleia implements Serializable {
     @Column(nullable = false)
     private String descricao;
 
-    @Column(nullable = false)
-    private Date data;
+    @OneToMany(mappedBy = "pauta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("data")
+    public List<Assembleia> assembleias;
 
-    @Column(nullable = false)
-    private Long duracao;
-
-    @ManyToOne
-    private Pauta pauta;
-
-    public Assembleia() {
+    public Pauta() {
         /* construtor vazio */
     }
 
-    public Assembleia(Long id) {
+    public Pauta(Long id) {
         this.id = id;
-    }
-
-    public Long obterIdPauta() {
-        if (pauta == null) {
-            return null;
-        }
-        return pauta.getId();
-    }
-
-    @PrePersist
-    public void prePersist() {
-        if (data == null) {
-            data = new Date();
-        }
-
-        if (duracao <= 0L) {
-            duracao = 1L;
-        }
     }
 
     public Long getId() {
@@ -65,30 +44,6 @@ public class Assembleia implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Date getData() {
-        return data;
-    }
-
-    public void setData(Date data) {
-        this.data = data;
-    }
-
-    public Long getDuracao() {
-        return duracao;
-    }
-
-    public void setDuracao(Long duracao) {
-        this.duracao = duracao;
-    }
-
-    public Pauta getPauta() {
-        return pauta;
-    }
-
-    public void setPauta(Pauta pauta) {
-        this.pauta = pauta;
     }
 
     public String getName() {
@@ -107,12 +62,20 @@ public class Assembleia implements Serializable {
         this.descricao = descricao;
     }
 
+    public List<Assembleia> getAssembleias() {
+        return assembleias;
+    }
+
+    public void setAssembleias(List<Assembleia> assembleias) {
+        this.assembleias = assembleias;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Assembleia that = (Assembleia) o;
-        return Objects.equals(id, that.id);
+        Pauta pauta = (Pauta) o;
+        return Objects.equals(id, pauta.id);
     }
 
     @Override
@@ -122,13 +85,10 @@ public class Assembleia implements Serializable {
 
     @Override
     public String toString() {
-        return "Assembleia{"
+        return "Pauta{"
                 + "id=" + id
                 + ", name='" + name + '\''
                 + ", descricao='" + descricao + '\''
-                + ", data=" + data
-                + ", duracao=" + duracao
-                + ", pauta=" + pauta
                 + '}';
     }
 }
