@@ -1,6 +1,6 @@
-package service;
+package com.dbc.vitorfurini.assembleiadbc.service;
 
-import entities.Votos;
+import com.dbc.vitorfurini.assembleiadbc.domain.Votos;
 
 import java.util.List;
 

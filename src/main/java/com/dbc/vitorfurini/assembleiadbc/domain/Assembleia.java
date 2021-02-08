@@ -1,4 +1,4 @@
-package entities;
+package com.dbc.vitorfurini.assembleiadbc.domain;
 
 import java.io.Serializable;
 import java.util.Date;

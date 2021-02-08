@@ -1,9 +1,9 @@
-package serviceImpl;
+package com.dbc.vitorfurini.assembleiadbc.serviceImpl;
 
-import entities.Votos;
+import com.dbc.vitorfurini.assembleiadbc.domain.Votos;
 import org.springframework.stereotype.Service;
-import repository.VotosRepository;
-import service.VotosService;
+import com.dbc.vitorfurini.assembleiadbc.repository.VotosRepository;
+import com.dbc.vitorfurini.assembleiadbc.service.VotosService;
 
 import java.util.List;
 

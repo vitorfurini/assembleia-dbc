@@ -1,4 +1,4 @@
-package config;
+package com.dbc.vitorfurini.assembleiadbc.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;

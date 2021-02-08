@@ -1,4 +1,4 @@
-package dto;
+package com.dbc.vitorfurini.assembleiadbc.dto;
 
 import java.io.Serializable;
 

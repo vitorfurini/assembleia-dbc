@@ -1,6 +1,6 @@
-package repository;
+package com.dbc.vitorfurini.assembleiadbc.repository;
 
-import entities.Assembleia;
+import com.dbc.vitorfurini.assembleiadbc.domain.Assembleia;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
