@@ -1,7 +1,9 @@
 package com.dbc.vitorfurini.assembleiadbc.domain;
 
+import com.dbc.vitorfurini.assembleiadbc.enums.StatusAssembleia;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,13 +27,16 @@ public class Assembleia implements Serializable {
     private String descricao;
 
     @Column(nullable = false)
-    private Date data;
+    private LocalDateTime data;
 
     @Column(nullable = false)
     private Long duracao;
 
     @ManyToOne
     private Pauta pauta;
+
+    @Column
+    private StatusAssembleia statusAssembleia;
 
     public Assembleia() {
         /* construtor vazio */
@@ -51,7 +56,7 @@ public class Assembleia implements Serializable {
     @PrePersist
     public void prePersist() {
         if (data == null) {
-            data = new Date();
+            data = LocalDateTime.now();
         }
 
         if (duracao <= 0L) {
@@ -67,11 +72,11 @@ public class Assembleia implements Serializable {
         this.id = id;
     }
 
-    public Date getData() {
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 
@@ -107,6 +112,14 @@ public class Assembleia implements Serializable {
         this.descricao = descricao;
     }
 
+    public StatusAssembleia getStatusAssembleia() {
+        return statusAssembleia;
+    }
+
+    public void setStatusAssembleia(StatusAssembleia statusAssembleia) {
+        this.statusAssembleia = statusAssembleia;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -129,6 +142,7 @@ public class Assembleia implements Serializable {
                 + ", data=" + data
                 + ", duracao=" + duracao
                 + ", pauta=" + pauta
+                + ", statusAssembleia=" + statusAssembleia
                 + '}';
     }
 }

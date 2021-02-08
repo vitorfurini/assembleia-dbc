@@ -1,5 +1,7 @@
 package com.dbc.vitorfurini.assembleiadbc.domain;
 
+import com.dbc.vitorfurini.assembleiadbc.enums.TipoVoto;
+
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -17,10 +19,13 @@ public class Votos implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private String tipoVoto;
+    private TipoVoto tipoVoto;
 
     @ManyToOne
     private Assembleia assembleia;
+
+    @ManyToOne
+    private Associado associado;
 
     public void setId(Long id) {
         this.id = id;
@@ -30,11 +35,11 @@ public class Votos implements Serializable {
         return id;
     }
 
-    public String getTipoVoto() {
+    public TipoVoto getTipoVoto() {
         return tipoVoto;
     }
 
-    public void setTipoVoto(String tipoVoto) {
+    public void setTipoVoto(TipoVoto tipoVoto) {
         this.tipoVoto = tipoVoto;
     }
 
@@ -44,6 +49,14 @@ public class Votos implements Serializable {
 
     public void setAssembleia(Assembleia assembleia) {
         this.assembleia = assembleia;
+    }
+
+    public Associado getAssociado() {
+        return associado;
+    }
+
+    public void setAssociado(Associado associado) {
+        this.associado = associado;
     }
 
     @Override

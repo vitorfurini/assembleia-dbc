@@ -1,5 +1,8 @@
 package com.dbc.vitorfurini.assembleiadbc.dto;
 
+import com.dbc.vitorfurini.assembleiadbc.enums.StatusAssembleia;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
@@ -8,12 +11,14 @@ public class AssembleiaDto implements Serializable {
 
     private Long id;
     private String name;
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", locale = "pt-BR", timezone ="America/São Paulo")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", locale = "pt-BR", timezone ="America/São Paulo")
     private Date data;
     private Long duracao;
     @NotNull(message = "O ID da pauta é obrigatório")
     private Long idPauta;
+    private String nomePauta;
     private String descricao;
+    private StatusAssembleia statusAssembleia;
 
     public Long getId() {
         return id;
@@ -63,6 +68,22 @@ public class AssembleiaDto implements Serializable {
         this.name = name;
     }
 
+    public StatusAssembleia getStatusAssembleia() {
+        return statusAssembleia;
+    }
+
+    public void setStatusAssembleia(StatusAssembleia statusAssembleia) {
+        this.statusAssembleia = statusAssembleia;
+    }
+
+    public String getNomePauta() {
+        return nomePauta;
+    }
+
+    public void setNomePauta(String nomePauta) {
+        this.nomePauta = nomePauta;
+    }
+
     @Override
     public String toString() {
         return "AssembleiaDto{"
@@ -71,7 +92,9 @@ public class AssembleiaDto implements Serializable {
                 + ", data=" + data
                 + ", duracao=" + duracao
                 + ", idPauta=" + idPauta
+                + ", nomePauta='" + nomePauta + '\''
                 + ", descricao='" + descricao + '\''
+                + ", statusAssembleia=" + statusAssembleia
                 + '}';
     }
 }

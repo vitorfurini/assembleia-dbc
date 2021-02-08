@@ -34,8 +34,10 @@ public class AssembleiaResource {
     @GetMapping
     public ResponseEntity<List<AssembleiaDto>> listarAssembleias() {
         List<Assembleia> assembleias = assembleiaService.listAll();
+//        List<Assembleia> assembleias1 = assembleiaService.findByIdPauta(pauta);
         List<AssembleiaDto> assembleiaDtos = assembleias.stream().map(assembleia -> modelMapper.map(assembleia,
                 AssembleiaDto.class)).collect(Collectors.toList());
+
         return ResponseEntity.ok(assembleiaDtos);
     }
 
