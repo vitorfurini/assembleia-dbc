@@ -2,7 +2,9 @@ package dto;
 
 import java.io.Serializable;
 
-public class Votos implements Serializable {
+public class VotosDto implements Serializable {
+
+    private Long id;
 
     public Long getId() {
         return id;
@@ -11,8 +13,6 @@ public class Votos implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-    private Long id;
 
     @Override
     public String toString() {
