@@ -1,53 +1,47 @@
 package com.dbc.vitorfurini.assembleiadbc;
 
 import com.dbc.vitorfurini.assembleiadbc.domain.Assembleia;
-import com.dbc.vitorfurini.assembleiadbc.domain.Pauta;
-import com.dbc.vitorfurini.assembleiadbc.enums.StatusAssembleia;
+import com.dbc.vitorfurini.assembleiadbc.mock.Mocks;
 import com.dbc.vitorfurini.assembleiadbc.repository.AssembleiaRepository;
+import com.dbc.vitorfurini.assembleiadbc.service.AssembleiaService;
 import com.dbc.vitorfurini.assembleiadbc.serviceImpl.AssembleiaServiceImpl;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDateTime;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-
 public class AssembleiaServiceImplTest {
 
+    @Mock
     AssembleiaServiceImpl assembleiaServiceImpl;
     @Mock
     AssembleiaRepository assembleiaRepository;
-
+    @Mock
+    AssembleiaService assembleiaService;
+    @Mock
+    Mocks mocks;
 
     @Before
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         assembleiaServiceImpl = new AssembleiaServiceImpl(assembleiaRepository);
+        mocks = new Mocks();
     }
 
 
     @Test
-    @Ignore
     public void testWhenContextIsHappy() {
-        Assembleia assembleia = new Assembleia();
-        Pauta pauta = new Pauta();
+        Assembleia assembleiaExpected = mocks.getAssembleia();
 
-        assembleia.setName("Assembleia da geral do grêmio");
-        assembleia.setData(LocalDateTime.now());
-        assembleia.setDescricao("Assembleia para discutir se devemos permitir a volta do R10");
-        assembleia.setDuracao(2L);
-        assembleia.setPauta(pauta);
-        assembleia.setStatusAssembleia(StatusAssembleia.ABERTA);
+        Mockito.when(assembleiaServiceImpl.novaAssembleia(assembleiaExpected)).thenReturn(assembleiaExpected);
 
-        Mockito.when(assembleiaServiceImpl.novaAssembleia(any())).thenReturn(assembleia);
+       Assembleia result = assembleiaServiceImpl.novaAssembleia(assembleiaExpected);
 
-        Assembleia a = assembleiaServiceImpl.novaAssembleia(assembleia);
+        Assert.assertEquals(result, assembleiaExpected);
 
-        Mockito.verify(assembleiaServiceImpl, times(1)).novaAssembleia(any());
+//        Mockito.verify(assembleiaRepository.save(assembleia))
+
     }
 }

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AssociadoRespository extends JpaRepository<Associado, Long> {
 
-    Associado findByCpf(String cpf);
+    Associado findByCpfAssociado(String cpfAssociado);
 
 }

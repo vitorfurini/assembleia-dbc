@@ -1,9 +1,13 @@
 package com.dbc.vitorfurini.assembleiadbc.domain;
 
 import com.dbc.vitorfurini.assembleiadbc.enums.TipoVoto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +16,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Votos implements Serializable {
 
     @Id
@@ -26,6 +35,9 @@ public class Votos implements Serializable {
 
     @ManyToOne
     private Associado associado;
+
+    @ManyToOne
+    private Pauta pauta;
 
     public void setId(Long id) {
         this.id = id;
@@ -57,27 +69,5 @@ public class Votos implements Serializable {
 
     public void setAssociado(Associado associado) {
         this.associado = associado;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Votos votos = (Votos) o;
-        return Objects.equals(id, votos.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Votos{"
-                + "id=" + id
-                + ", tipoVoto='" + tipoVoto + '\''
-                + ", assembleia=" + assembleia
-                + '}';
     }
 }

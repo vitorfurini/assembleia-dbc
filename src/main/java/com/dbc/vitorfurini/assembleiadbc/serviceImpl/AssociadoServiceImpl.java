@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class AssociadoServiceImpl implements AssociadoService {
 
-    private AssociadoRespository associadoRespository;
+    private final AssociadoRespository associadoRespository;
 
     public AssociadoServiceImpl(AssociadoRespository associadoRespository) {
         this.associadoRespository = associadoRespository;
@@ -22,8 +22,8 @@ public class AssociadoServiceImpl implements AssociadoService {
     }
 
     @Override
-    public Associado findByCpf(String cpf) {
-        return associadoRespository.findByCpf(cpf);
+    public Associado findByCpf(String cpfAssociado) {
+        return associadoRespository.findByCpfAssociado(cpfAssociado);
     }
 
     @Override

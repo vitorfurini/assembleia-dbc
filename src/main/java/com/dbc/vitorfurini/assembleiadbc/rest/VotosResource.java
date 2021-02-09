@@ -1,9 +1,10 @@
 package com.dbc.vitorfurini.assembleiadbc.rest;
 
 import com.dbc.vitorfurini.assembleiadbc.domain.Votos;
-import com.dbc.vitorfurini.assembleiadbc.dto.VotosDto;
 import com.dbc.vitorfurini.assembleiadbc.service.VotosService;
-import org.modelmapper.ModelMapper;
+import com.dbc.vitorfurini.assembleiadbc.utils.JsonConverter;
+import com.dbc.vitorfurini.assembleiadbc.vo.request.VotosRequestVO;
+import com.dbc.vitorfurini.assembleiadbc.vo.response.VotosResponseVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,28 +24,28 @@ import javax.validation.Valid;
 public class VotosResource {
 
     private final VotosService votoService;
-    private final ModelMapper modelMapper;
+    private final JsonConverter jsonConverter;
 
-    public VotosResource(VotosService votoService, ModelMapper modelMapper) {
+    public VotosResource(VotosService votoService, JsonConverter jsonConverter) {
         this.votoService = votoService;
-        this.modelMapper = modelMapper;
+        this.jsonConverter = jsonConverter;
     }
 
     @GetMapping
-    public ResponseEntity<List<VotosDto>> listar() {
+    public ResponseEntity<List<VotosResponseVO>> listar() {
         List<Votos> votos = votoService.listAll();
-        List<VotosDto> votosDto = votos.stream()
-                .map(voto -> modelMapper.map(voto, VotosDto.class))
+        List<VotosResponseVO> votosResponseVO = votos.stream()
+                .map(voto -> jsonConverter.convertObject(voto, VotosResponseVO.class))
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(votosDto);
+        return ResponseEntity.ok(votosResponseVO);
     }
 
     @PostMapping
-    public ResponseEntity<VotosDto> salvarVoto(@Valid @RequestBody VotosDto votosDto) {
-        Votos votos = modelMapper.map(votosDto, Votos.class);
-        Votos votosDtos = votoService.save(votos);
+    public ResponseEntity<VotosRequestVO> salvarVoto(@Valid @RequestBody VotosRequestVO votosRequestVO) {
+        Votos votos = jsonConverter.convertObject(votosRequestVO, Votos.class);
+        Votos novosVotos = votoService.save(votos);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(modelMapper.map(votosDtos, VotosDto.class));
+                .body(jsonConverter.convertObject(votosRequestVO, VotosRequestVO.class));
     }
 
 }

@@ -2,9 +2,10 @@ package com.dbc.vitorfurini.assembleiadbc.rest;
 
 
 import com.dbc.vitorfurini.assembleiadbc.domain.Assembleia;
-import com.dbc.vitorfurini.assembleiadbc.dto.AssembleiaDto;
 import com.dbc.vitorfurini.assembleiadbc.service.AssembleiaService;
-import org.modelmapper.ModelMapper;
+import com.dbc.vitorfurini.assembleiadbc.utils.JsonConverter;
+import com.dbc.vitorfurini.assembleiadbc.vo.request.AssembleiaRequestVO;
+import com.dbc.vitorfurini.assembleiadbc.vo.response.AssembleiaResponseVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -24,29 +27,30 @@ import javax.validation.Valid;
 public class AssembleiaResource {
 
     private final AssembleiaService assembleiaService;
-    private final ModelMapper modelMapper;
+    private final JsonConverter jsonConverter;
 
-    public AssembleiaResource(AssembleiaService assembleiaService, ModelMapper modelMapper) {
+    public AssembleiaResource(AssembleiaService assembleiaService, JsonConverter jsonConverter) {
         this.assembleiaService = assembleiaService;
-        this.modelMapper = modelMapper;
+        this.jsonConverter = jsonConverter;
     }
 
     @GetMapping
-    public ResponseEntity<List<AssembleiaDto>> listarAssembleias() {
+    public ResponseEntity<List<AssembleiaResponseVO>> listarAssembleias() {
         List<Assembleia> assembleias = assembleiaService.listAll();
-//        List<Assembleia> assembleias1 = assembleiaService.findByIdPauta(pauta);
-        List<AssembleiaDto> assembleiaDtos = assembleias.stream().map(assembleia -> modelMapper.map(assembleia,
-                AssembleiaDto.class)).collect(Collectors.toList());
+        List<AssembleiaResponseVO> assembleiaResponse =
+                assembleias.stream().map(assembleia -> jsonConverter.convertObject(assembleia,
+                AssembleiaResponseVO.class)).collect(Collectors.toList());
 
-        return ResponseEntity.ok(assembleiaDtos);
+        return ResponseEntity.ok(assembleiaResponse);
     }
 
     @PostMapping
-    public ResponseEntity<AssembleiaDto> cadastrar(@Valid @RequestBody AssembleiaDto assembleiaDto) {
-        Assembleia assembleia = modelMapper.map(assembleiaDto, Assembleia.class);
+    public ResponseEntity<AssembleiaRequestVO> cadastrar(@Valid @RequestBody AssembleiaRequestVO assembleiaRequestVO) {
+        Assembleia assembleia = jsonConverter.convertObject(assembleiaRequestVO, Assembleia.class);
+        assembleia.setDataCriacao(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         Assembleia novaAssembleia1 = assembleiaService.novaAssembleia(assembleia);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(modelMapper.map(novaAssembleia1, AssembleiaDto.class));
+                .body(jsonConverter.convertObject(novaAssembleia1, AssembleiaRequestVO.class));
     }
 }

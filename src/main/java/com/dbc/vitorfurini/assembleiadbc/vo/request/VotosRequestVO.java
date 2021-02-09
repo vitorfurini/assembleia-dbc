@@ -1,10 +1,20 @@
-package com.dbc.vitorfurini.assembleiadbc.dto;
+package com.dbc.vitorfurini.assembleiadbc.vo.request;
 
 import com.dbc.vitorfurini.assembleiadbc.enums.TipoVoto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 
-public class VotosDto implements Serializable {
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class VotosRequestVO implements Serializable {
 
     private Long id;
 
@@ -44,15 +54,5 @@ public class VotosDto implements Serializable {
 
     public void setIdAssembleia(Long idAssembleia) {
         this.idAssembleia = idAssembleia;
-    }
-
-    @Override
-    public String toString() {
-        return "VotosDto{"
-                + "id=" + id
-                + ", idAssociado=" + idAssociado
-                + ", idAssembleia=" + idAssembleia
-                + ", tipoVoto=" + tipoVoto
-                + '}';
     }
 }

@@ -1,8 +1,13 @@
 package com.dbc.vitorfurini.assembleiadbc.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +19,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 @Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Pauta implements Serializable {
 
     @Id
@@ -21,18 +31,14 @@ public class Pauta implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String nomePauta;
 
     @Column(nullable = false)
-    private String descricao;
+    private String descricaoPauta;
 
     @OneToMany(mappedBy = "pauta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @OrderBy("data")
+    @OrderBy("dataCriacao")
     public List<Assembleia> assembleias;
-
-    public Pauta() {
-        /* construtor vazio */
-    }
 
     public Pauta(Long id) {
         this.id = id;
@@ -46,49 +52,20 @@ public class Pauta implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNomePauta() {
+        return nomePauta;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNomePauta(String nomePauta) {
+        this.nomePauta = nomePauta;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getDescricaoPauta() {
+        return descricaoPauta;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDescricaoPauta(String descricaoPauta) {
+        this.descricaoPauta = descricaoPauta;
     }
 
-    public List<Assembleia> getAssembleias() {
-        return assembleias;
-    }
-
-    public void setAssembleias(List<Assembleia> assembleias) {
-        this.assembleias = assembleias;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pauta pauta = (Pauta) o;
-        return Objects.equals(id, pauta.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Pauta{"
-                + "id=" + id
-                + ", name='" + name + '\''
-                + ", descricao='" + descricao + '\''
-                + '}';
-    }
 }

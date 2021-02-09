@@ -1,9 +1,10 @@
 package com.dbc.vitorfurini.assembleiadbc.rest;
 
 import com.dbc.vitorfurini.assembleiadbc.domain.Pauta;
-import com.dbc.vitorfurini.assembleiadbc.dto.PautaDto;
 import com.dbc.vitorfurini.assembleiadbc.service.PautaService;
-import org.modelmapper.ModelMapper;
+import com.dbc.vitorfurini.assembleiadbc.utils.JsonConverter;
+import com.dbc.vitorfurini.assembleiadbc.vo.request.PautaRequestVO;
+import com.dbc.vitorfurini.assembleiadbc.vo.response.PautaResponseVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,27 +24,27 @@ import javax.validation.Valid;
 public class PautaResource {
 
     private final PautaService pautaService;
-    private final ModelMapper modelMapper;
+    private final JsonConverter jsonConverter;
 
-    public PautaResource(PautaService pautaService, ModelMapper modelMapper) {
+    public PautaResource(PautaService pautaService, JsonConverter jsonConverter) {
         this.pautaService = pautaService;
-        this.modelMapper = modelMapper;
+        this.jsonConverter = jsonConverter;
     }
 
     @GetMapping
-    public ResponseEntity<List<PautaDto>> listarPautas() {
+    public ResponseEntity<List<PautaResponseVO>> listarPautas() {
         List<Pauta> pautas = pautaService.listarAll();
-        List<PautaDto> pautaDtos = pautas.stream().map(pauta -> modelMapper.map(pauta,
-                PautaDto.class)).collect(Collectors.toList());
-        return ResponseEntity.ok(pautaDtos);
+        List<PautaResponseVO> pautaResponseVO = pautas.stream().map(pauta -> jsonConverter.convertObject(pauta,
+                PautaResponseVO.class)).collect(Collectors.toList());
+        return ResponseEntity.ok(pautaResponseVO);
     }
 
     @PostMapping
-    public ResponseEntity<PautaDto> novaPauta(@Valid @RequestBody PautaDto pautaDto) {
-        Pauta pauta = modelMapper.map(pautaDto, Pauta.class);
+    public ResponseEntity<PautaRequestVO> novaPauta(@Valid @RequestBody PautaRequestVO pautaRequestVO) {
+        Pauta pauta = jsonConverter.convertObject(pautaRequestVO, Pauta.class);
         Pauta novaPauta1 = pautaService.novaPauta(pauta);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(modelMapper.map(novaPauta1, PautaDto.class));
+                .body(jsonConverter.convertObject(novaPauta1, PautaRequestVO.class));
     }
 }

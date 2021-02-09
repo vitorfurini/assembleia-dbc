@@ -1,9 +1,10 @@
 package com.dbc.vitorfurini.assembleiadbc.rest;
 
 import com.dbc.vitorfurini.assembleiadbc.domain.Associado;
-import com.dbc.vitorfurini.assembleiadbc.dto.AssociadoDto;
 import com.dbc.vitorfurini.assembleiadbc.service.AssociadoService;
-import org.modelmapper.ModelMapper;
+import com.dbc.vitorfurini.assembleiadbc.utils.JsonConverter;
+import com.dbc.vitorfurini.assembleiadbc.vo.request.AssociadoRequestVO;
+import com.dbc.vitorfurini.assembleiadbc.vo.response.AssociadoResposeVO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,35 +25,36 @@ import javax.validation.Valid;
 public class AssociadoResource {
 
     private final AssociadoService associadoService;
-    private final ModelMapper modelMapper;
+    private final JsonConverter jsonConverter;
 
-    public AssociadoResource(AssociadoService associadoService, ModelMapper modelMapper) {
+    public AssociadoResource(AssociadoService associadoService, JsonConverter jsonConverter) {
         this.associadoService = associadoService;
-        this.modelMapper = modelMapper;
+        this.jsonConverter = jsonConverter;
     }
 
     @GetMapping
-    public ResponseEntity<List<AssociadoDto>> listAll() {
+    public ResponseEntity<List<AssociadoResposeVO>> listAll() {
         List<Associado> associados = associadoService.listAll();
-        List<AssociadoDto> associadoDtos = associados.stream().map(associado -> modelMapper.map(associado,
-                AssociadoDto.class)).collect(Collectors.toList());
+        List<AssociadoResposeVO> associadoResposeVO =
+                associados.stream().map(associado -> jsonConverter.convertObject(associado,
+                AssociadoResposeVO.class)).collect(Collectors.toList());
 
-        return ResponseEntity.ok(associadoDtos);
+        return ResponseEntity.ok(associadoResposeVO);
     }
 
     @GetMapping(path = {"/find/{cpf}"})
-    public ResponseEntity<Associado> findByCpf(@PathVariable String cpf) {
+    public ResponseEntity<Associado> findByCpfAssociado(@PathVariable String cpf) {
         Associado associados = associadoService.findByCpf(cpf);
         return ResponseEntity.ok(associados);
     }
 
     @PostMapping
-    public ResponseEntity<AssociadoDto> cadastrar(@Valid @RequestBody AssociadoDto associadoDto) {
-        Associado associado = modelMapper.map(associadoDto, Associado.class);
-        Associado associado1 = associadoService.novoAssociado(associado);
+    public ResponseEntity<AssociadoRequestVO> cadastrar(@Valid @RequestBody AssociadoRequestVO associadoRequestVO) {
+        Associado associado = jsonConverter.convertObject(associadoRequestVO, Associado.class);
+        Associado novoAssociado = associadoService.novoAssociado(associado);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(modelMapper.map(associado1, AssociadoDto.class));
+                .body(jsonConverter.convertObject(novoAssociado, AssociadoRequestVO.class));
     }
 
 }

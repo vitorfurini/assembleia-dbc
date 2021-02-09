@@ -1,8 +1,13 @@
 package com.dbc.vitorfurini.assembleiadbc.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +18,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Associado implements Serializable {
 
     @Id
@@ -20,10 +30,10 @@ public class Associado implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String nomeAssociado;
 
     @Column(nullable = false)
-    private String cpf;
+    private String cpfAssociado;
 
     @OneToMany(mappedBy = "associado", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Votos> votos;
@@ -36,20 +46,20 @@ public class Associado implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNomeAssociado() {
+        return nomeAssociado;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNomeAssociado(String nomeAssociado) {
+        this.nomeAssociado = nomeAssociado;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getCpfAssociado() {
+        return cpfAssociado;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setCpfAssociado(String cpfAssociado) {
+        this.cpfAssociado = cpfAssociado;
     }
 
     public List<Votos> getVotos() {
@@ -60,26 +70,4 @@ public class Associado implements Serializable {
         this.votos = votos;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Associado associado = (Associado) o;
-        return Objects.equals(id, associado.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Associado{"
-                + "id=" + id
-                + ", name='" + name + '\''
-                + ", cpf='" + cpf + '\''
-                + ", votos=" + votos
-                + '}';
-    }
 }
