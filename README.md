@@ -23,10 +23,10 @@ Do projeto:
   Ao acessar "http://localhost:8081/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config", terás acesso a todas as features implementadas citadas acima.
   
   Para fazer uma requisição GET ou POST diretamente nos serviços utilizando PostMan:
-  Pautas - http://localhost:8081/v1/api/pautas
-  Assembleias - http://localhost:8081/v1/api/assembleias
-  Associado - http://localhost:8081/v1/api/associados
-  Votos - http://localhost:8081/v1/api/votos
+  - Pautas - http://localhost:8081/v1/api/pautas
+  - Assembleias - http://localhost:8081/v1/api/assembleias
+  - Associado - http://localhost:8081/v1/api/associados
+  - Votos - http://localhost:8081/v1/api/votos
   
   
   
