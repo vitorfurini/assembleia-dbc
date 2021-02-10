@@ -17,7 +17,7 @@ public class PautaServiceImpl implements PautaService {
     }
 
     @Override
-    public List<Pauta> listarAll() {
+    public List<Pauta> listAll() {
         return pautaRepository.findAll();
     }
 

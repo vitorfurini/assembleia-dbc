@@ -2,9 +2,9 @@ package com.dbc.vitorfurini.assembleiadbc.rest;
 
 import com.dbc.vitorfurini.assembleiadbc.domain.Associado;
 import com.dbc.vitorfurini.assembleiadbc.service.AssociadoService;
-import com.dbc.vitorfurini.assembleiadbc.utils.JsonConverter;
 import com.dbc.vitorfurini.assembleiadbc.vo.request.AssociadoRequestVO;
 import com.dbc.vitorfurini.assembleiadbc.vo.response.AssociadoResposeVO;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,18 +25,18 @@ import javax.validation.Valid;
 public class AssociadoResource {
 
     private final AssociadoService associadoService;
-    private final JsonConverter jsonConverter;
+    private final ModelMapper modelMapper;
 
-    public AssociadoResource(AssociadoService associadoService, JsonConverter jsonConverter) {
+    public AssociadoResource(AssociadoService associadoService, ModelMapper modelMapper) {
         this.associadoService = associadoService;
-        this.jsonConverter = jsonConverter;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping
     public ResponseEntity<List<AssociadoResposeVO>> listAll() {
         List<Associado> associados = associadoService.listAll();
         List<AssociadoResposeVO> associadoResposeVO =
-                associados.stream().map(associado -> jsonConverter.convertObject(associado,
+                associados.stream().map(associado -> modelMapper.map(associado,
                 AssociadoResposeVO.class)).collect(Collectors.toList());
 
         return ResponseEntity.ok(associadoResposeVO);
@@ -49,12 +49,12 @@ public class AssociadoResource {
     }
 
     @PostMapping
-    public ResponseEntity<AssociadoRequestVO> cadastrar(@Valid @RequestBody AssociadoRequestVO associadoRequestVO) {
-        Associado associado = jsonConverter.convertObject(associadoRequestVO, Associado.class);
+    public ResponseEntity<AssociadoRequestVO> cadastrar(@Valid @RequestBody AssociadoRequestVO associadoRequestVO) throws Exception {
+        Associado associado = modelMapper.map(associadoRequestVO, Associado.class);
         Associado novoAssociado = associadoService.novoAssociado(associado);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(jsonConverter.convertObject(novoAssociado, AssociadoRequestVO.class));
+                .body(modelMapper.map(novoAssociado, AssociadoRequestVO.class));
     }
 
 }

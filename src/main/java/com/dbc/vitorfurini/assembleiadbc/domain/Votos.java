@@ -10,6 +10,8 @@ import lombok.ToString;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,10 +26,11 @@ import javax.persistence.ManyToOne;
 public class Votos implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private TipoVoto tipoVoto;
 
     @ManyToOne
@@ -35,9 +38,6 @@ public class Votos implements Serializable {
 
     @ManyToOne
     private Associado associado;
-
-    @ManyToOne
-    private Pauta pauta;
 
     public void setId(Long id) {
         this.id = id;

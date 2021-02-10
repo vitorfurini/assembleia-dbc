@@ -1,6 +1,6 @@
 package com.dbc.vitorfurini.assembleiadbc.config;
 
-import com.dbc.vitorfurini.assembleiadbc.utils.JsonConverter;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,10 @@ public class Config {
     }
 
     @Bean
-    public JsonConverter jsonConverter() {
-        return new JsonConverter();
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
+
+
+    public static String URL = "https://user-info.herokuapp.com/users/";
 }

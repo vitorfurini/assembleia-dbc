@@ -36,7 +36,7 @@ public class Associado implements Serializable {
     private String cpfAssociado;
 
     @OneToMany(mappedBy = "associado", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public List<Votos> votos;
+    private List<Votos> votos;
 
     public Long getId() {
         return id;

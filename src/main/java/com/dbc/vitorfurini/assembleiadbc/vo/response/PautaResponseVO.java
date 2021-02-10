@@ -20,4 +20,27 @@ public class PautaResponseVO  implements Serializable {
     private String nomePauta;
     private String descricaoPauta;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNomePauta() {
+        return nomePauta;
+    }
+
+    public void setNomePauta(String nomePauta) {
+        this.nomePauta = nomePauta;
+    }
+
+    public String getDescricaoPauta() {
+        return descricaoPauta;
+    }
+
+    public void setDescricaoPauta(String descricaoPauta) {
+        this.descricaoPauta = descricaoPauta;
+    }
 }

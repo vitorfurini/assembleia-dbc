@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PautaService {
 
-    List<Pauta> listarAll();
+    List<Pauta> listAll();
 
     Pauta novaPauta(Pauta pauta);
 }

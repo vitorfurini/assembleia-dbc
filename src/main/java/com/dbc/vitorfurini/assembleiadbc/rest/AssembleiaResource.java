@@ -3,9 +3,9 @@ package com.dbc.vitorfurini.assembleiadbc.rest;
 
 import com.dbc.vitorfurini.assembleiadbc.domain.Assembleia;
 import com.dbc.vitorfurini.assembleiadbc.service.AssembleiaService;
-import com.dbc.vitorfurini.assembleiadbc.utils.JsonConverter;
 import com.dbc.vitorfurini.assembleiadbc.vo.request.AssembleiaRequestVO;
 import com.dbc.vitorfurini.assembleiadbc.vo.response.AssembleiaResponseVO;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,18 +27,18 @@ import javax.validation.Valid;
 public class AssembleiaResource {
 
     private final AssembleiaService assembleiaService;
-    private final JsonConverter jsonConverter;
+    private final ModelMapper modelMapper;
 
-    public AssembleiaResource(AssembleiaService assembleiaService, JsonConverter jsonConverter) {
+    public AssembleiaResource(AssembleiaService assembleiaService, ModelMapper modelMapper) {
         this.assembleiaService = assembleiaService;
-        this.jsonConverter = jsonConverter;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping
     public ResponseEntity<List<AssembleiaResponseVO>> listarAssembleias() {
         List<Assembleia> assembleias = assembleiaService.listAll();
         List<AssembleiaResponseVO> assembleiaResponse =
-                assembleias.stream().map(assembleia -> jsonConverter.convertObject(assembleia,
+                assembleias.stream().map(assembleia -> modelMapper.map(assembleia,
                 AssembleiaResponseVO.class)).collect(Collectors.toList());
 
         return ResponseEntity.ok(assembleiaResponse);
@@ -46,11 +46,11 @@ public class AssembleiaResource {
 
     @PostMapping
     public ResponseEntity<AssembleiaRequestVO> cadastrar(@Valid @RequestBody AssembleiaRequestVO assembleiaRequestVO) {
-        Assembleia assembleia = jsonConverter.convertObject(assembleiaRequestVO, Assembleia.class);
+        Assembleia assembleia = modelMapper.map(assembleiaRequestVO, Assembleia.class);
         assembleia.setDataCriacao(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         Assembleia novaAssembleia1 = assembleiaService.novaAssembleia(assembleia);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(jsonConverter.convertObject(novaAssembleia1, AssembleiaRequestVO.class));
+                .body(modelMapper.map(novaAssembleia1, AssembleiaRequestVO.class));
     }
 }

@@ -1,10 +1,8 @@
-package com.dbc.vitorfurini.assembleiadbc;
+package com.dbc.vitorfurini.assembleiadbc.serviceImpl;
 
 import com.dbc.vitorfurini.assembleiadbc.domain.Assembleia;
 import com.dbc.vitorfurini.assembleiadbc.mock.Mocks;
 import com.dbc.vitorfurini.assembleiadbc.repository.AssembleiaRepository;
-import com.dbc.vitorfurini.assembleiadbc.service.AssembleiaService;
-import com.dbc.vitorfurini.assembleiadbc.serviceImpl.AssembleiaServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,14 +10,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
+
 public class AssembleiaServiceImplTest {
 
     @Mock
     AssembleiaServiceImpl assembleiaServiceImpl;
     @Mock
     AssembleiaRepository assembleiaRepository;
-    @Mock
-    AssembleiaService assembleiaService;
     @Mock
     Mocks mocks;
 
@@ -30,6 +28,15 @@ public class AssembleiaServiceImplTest {
         mocks = new Mocks();
     }
 
+    @Test
+    public void testListAll() {
+        List<Assembleia> assembleiasExpectedList = mocks.getListAssembleias();
+        Mockito.when(assembleiaRepository.findAll()).thenReturn(mocks.getListAssembleias());
+
+        List<Assembleia> lista = assembleiaServiceImpl.listAll();
+
+        Assert.assertEquals(assembleiasExpectedList, lista);
+    }
 
     @Test
     public void testWhenContextIsHappy() {
@@ -37,11 +44,10 @@ public class AssembleiaServiceImplTest {
 
         Mockito.when(assembleiaServiceImpl.novaAssembleia(assembleiaExpected)).thenReturn(assembleiaExpected);
 
-       Assembleia result = assembleiaServiceImpl.novaAssembleia(assembleiaExpected);
+        Assembleia result = assembleiaServiceImpl.novaAssembleia(assembleiaExpected);
 
         Assert.assertEquals(result, assembleiaExpected);
-
-//        Mockito.verify(assembleiaRepository.save(assembleia))
-
     }
+
+
 }
