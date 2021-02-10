@@ -5,6 +5,8 @@ import com.dbc.vitorfurini.assembleiadbc.service.VotosService;
 import com.dbc.vitorfurini.assembleiadbc.vo.request.VotosRequestVO;
 import com.dbc.vitorfurini.assembleiadbc.vo.response.VotosResponseVO;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +25,8 @@ import javax.validation.Valid;
 @CrossOrigin(origins = "*")
 public class VotosResource {
 
+    private static final Logger log = LoggerFactory.getLogger(VotosResource.class);
+
     private final VotosService votoService;
     private final ModelMapper modelMapper;
 
@@ -33,6 +37,7 @@ public class VotosResource {
 
     @GetMapping
     public ResponseEntity<List<VotosResponseVO>> listar() {
+        log.info("Requisição para listar todos os votos computados");
         List<Votos> votos = votoService.listAll();
         List<VotosResponseVO> votosResponseVO = votos.stream()
                 .map(voto -> modelMapper.map(voto, VotosResponseVO.class))
@@ -42,8 +47,10 @@ public class VotosResource {
 
     @PostMapping
     public ResponseEntity<VotosRequestVO> salvarVoto(@Valid @RequestBody VotosRequestVO votosRequestVO) {
+        log.info("Requisição para cadastrar um novo voto");
         Votos votos = modelMapper.map(votosRequestVO, Votos.class);
         Votos novosVotos = votoService.save(votos);
+        log.info("Voto computado com sucesso {}", votosRequestVO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(modelMapper.map(novosVotos, VotosRequestVO.class));
     }

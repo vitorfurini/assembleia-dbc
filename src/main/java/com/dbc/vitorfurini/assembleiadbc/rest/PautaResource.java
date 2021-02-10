@@ -5,6 +5,8 @@ import com.dbc.vitorfurini.assembleiadbc.service.PautaService;
 import com.dbc.vitorfurini.assembleiadbc.vo.request.PautaRequestVO;
 import com.dbc.vitorfurini.assembleiadbc.vo.response.PautaResponseVO;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +25,8 @@ import javax.validation.Valid;
 @CrossOrigin(origins = "*")
 public class PautaResource {
 
+    private static final Logger log = LoggerFactory.getLogger(PautaResource.class);
+
     private final PautaService pautaService;
     private final ModelMapper modelMapper;
 
@@ -33,6 +37,7 @@ public class PautaResource {
 
     @GetMapping
     public ResponseEntity<List<PautaResponseVO>> listarPautas() {
+        log.info("Requisição para listar todas as pautas cadastradas");
         List<Pauta> pautas = pautaService.listAll();
         List<PautaResponseVO> pautaResponseVO = pautas.stream().map(pauta -> modelMapper.map(pauta,
                 PautaResponseVO.class)).collect(Collectors.toList());
@@ -41,8 +46,10 @@ public class PautaResource {
 
     @PostMapping
     public ResponseEntity<PautaRequestVO> novaPauta(@Valid @RequestBody PautaRequestVO pautaRequestVO) {
+        log.info("Requisição para cadastrar uma nova pauta");
         Pauta pauta = modelMapper.map(pautaRequestVO, Pauta.class);
         Pauta novaPauta1 = pautaService.novaPauta(pauta);
+        log.info("Pauta cadastrada com sucesso {}", pautaRequestVO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(modelMapper.map(novaPauta1, PautaRequestVO.class));
