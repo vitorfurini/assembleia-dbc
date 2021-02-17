@@ -33,7 +33,7 @@ public class Mocks {
 
     public Associado getAssociado() {
         return Associado.builder()
-                .cpfAssociado("12345678912")
+                .cpfAssociado("85135127020")
                 .id(1L)
                 .nomeAssociado("Vitor Furini")
                 .build();

@@ -26,6 +26,7 @@ public class AssociadoServiceImpl implements AssociadoService {
 
     @Override
     public Associado findByCpf(String cpfAssociado) {
+        validation.validaCpf(cpfAssociado);
         return associadoRespository.findByCpfAssociado(cpfAssociado);
     }
 

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 
@@ -32,6 +33,7 @@ public class AssembleiaResource {
 
     private final AssembleiaService assembleiaService;
     private final ModelMapper modelMapper;
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 
     public AssembleiaResource(AssembleiaService assembleiaService, ModelMapper modelMapper) {
         this.assembleiaService = assembleiaService;
@@ -40,22 +42,22 @@ public class AssembleiaResource {
 
     @GetMapping
     public ResponseEntity<List<AssembleiaResponseVO>> listarAssembleias() {
-        log.info("Requisição para listar todas as assembleias");
+        log.info(resourceBundle.getString("msg.assembleia.listar"));
         List<Assembleia> assembleias = assembleiaService.listAll();
         List<AssembleiaResponseVO> assembleiaResponse =
                 assembleias.stream().map(assembleia -> modelMapper.map(assembleia,
-                AssembleiaResponseVO.class)).collect(Collectors.toList());
+                        AssembleiaResponseVO.class)).collect(Collectors.toList());
 
         return ResponseEntity.ok(assembleiaResponse);
     }
 
     @PostMapping
     public ResponseEntity<AssembleiaRequestVO> cadastrar(@Valid @RequestBody AssembleiaRequestVO assembleiaRequestVO) {
-        log.info("Requisição para salvar uma nova assembleia");
+        log.info(resourceBundle.getString("msg.assembleia.cadastrar"), assembleiaRequestVO);
         Assembleia assembleia = modelMapper.map(assembleiaRequestVO, Assembleia.class);
         assembleia.setDataCriacao(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
         Assembleia novaAssembleia1 = assembleiaService.novaAssembleia(assembleia);
-        log.info("Assembleia cadastrada com sucesso {}", assembleiaRequestVO);
+        log.info(resourceBundle.getString("msg.assembleia.sucesso"), assembleiaRequestVO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(modelMapper.map(novaAssembleia1, AssembleiaRequestVO.class));

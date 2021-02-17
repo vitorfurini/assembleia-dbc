@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 
@@ -29,6 +30,7 @@ public class VotosResource {
 
     private final VotosService votoService;
     private final ModelMapper modelMapper;
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 
     public VotosResource(VotosService votoService, ModelMapper modelMapper) {
         this.votoService = votoService;
@@ -37,7 +39,7 @@ public class VotosResource {
 
     @GetMapping
     public ResponseEntity<List<VotosResponseVO>> listar() {
-        log.info("Requisição para listar todos os votos computados");
+        log.info(resourceBundle.getString("msg.voto.listar"));
         List<Votos> votos = votoService.listAll();
         List<VotosResponseVO> votosResponseVO = votos.stream()
                 .map(voto -> modelMapper.map(voto, VotosResponseVO.class))
@@ -47,10 +49,10 @@ public class VotosResource {
 
     @PostMapping
     public ResponseEntity<VotosRequestVO> salvarVoto(@Valid @RequestBody VotosRequestVO votosRequestVO) {
-        log.info("Requisição para cadastrar um novo voto");
+        log.info(resourceBundle.getString("msg.voto.cadastrar"), votosRequestVO);
         Votos votos = modelMapper.map(votosRequestVO, Votos.class);
         Votos novosVotos = votoService.save(votos);
-        log.info("Voto computado com sucesso {}", votosRequestVO);
+        log.info(resourceBundle.getString("msg.voto.sucesso"), votosRequestVO);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(modelMapper.map(novosVotos, VotosRequestVO.class));
     }

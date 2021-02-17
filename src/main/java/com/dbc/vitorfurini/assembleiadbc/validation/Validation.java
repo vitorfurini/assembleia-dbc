@@ -6,4 +6,6 @@ public interface Validation {
 
     void validaAssociado(Associado associado);
 
+    void validaCpf(String cpf);
+
 }

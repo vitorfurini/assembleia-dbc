@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 
@@ -30,6 +31,7 @@ public class AssociadoResource {
 
     private final AssociadoService associadoService;
     private final ModelMapper modelMapper;
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("messages");
 
     public AssociadoResource(AssociadoService associadoService, ModelMapper modelMapper) {
         this.associadoService = associadoService;
@@ -38,7 +40,7 @@ public class AssociadoResource {
 
     @GetMapping
     public ResponseEntity<List<AssociadoResposeVO>> listAll() {
-        log.info("Requisição para listar todos os associados cadastrados");
+        log.info(resourceBundle.getString("msg.associado.listar"));
         List<Associado> associados = associadoService.listAll();
         List<AssociadoResposeVO> associadoResposeVO =
                 associados.stream().map(associado -> modelMapper.map(associado,
@@ -49,17 +51,17 @@ public class AssociadoResource {
 
     @GetMapping(path = {"/find/{cpf}"})
     public ResponseEntity<Associado> findByCpfAssociado(@PathVariable String cpf) {
-        log.info("Requisição para buscar associado por cpf");
+        log.info(resourceBundle.getString("msg.associado.buscar"), cpf);
         Associado associados = associadoService.findByCpf(cpf);
         return ResponseEntity.ok(associados);
     }
 
     @PostMapping
     public ResponseEntity<AssociadoRequestVO> cadastrar(@Valid @RequestBody AssociadoRequestVO associadoRequestVO) {
-        log.info("Requisição para cadastrar um novo associado");
+        log.info(resourceBundle.getString("msg.associado.cadastrar"), associadoRequestVO);
         Associado associado = modelMapper.map(associadoRequestVO, Associado.class);
         Associado novoAssociado = associadoService.novoAssociado(associado);
-        log.info("Associado cadastrado com sucesso! {}", associadoRequestVO);
+        log.info(resourceBundle.getString("msg.associado.sucesso"), associadoRequestVO);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(modelMapper.map(novoAssociado, AssociadoRequestVO.class));

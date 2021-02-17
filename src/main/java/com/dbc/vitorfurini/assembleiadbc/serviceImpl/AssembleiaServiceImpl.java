@@ -27,9 +27,4 @@ public class AssembleiaServiceImpl implements AssembleiaService {
     public Assembleia novaAssembleia(Assembleia assembleia) {
         return assembleiaRepository.save(assembleia);
     }
-
-    @Override
-    public Optional<Assembleia> findByIdPauta(Pauta pauta) {
-        return assembleiaRepository.findById(pauta.getId());
-    }
 }
