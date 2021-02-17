@@ -4,12 +4,12 @@ Projeto desenvolvido como forma de avaliação técnica para DBC Company.
 Do projeto:
 
 - Informações Técnicas
-  Java 11
-  SpringBoot Framework 2.4.2
-  Maven 3.6.3
-  Banco de dados H2
-  JUnit e Mockito para testes unitários
-  Swagger UI para documentação
+  - Java 11
+  - SpringBoot Framework 2.4.2
+  - Maven 3.6.3
+  - Banco de dados H2
+  - JUnit e Mockito para testes unitários
+  - Swagger UI para documentação
 
 - Features implementadas.
   - Cadastrar uma nova pauta
