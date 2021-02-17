@@ -1,5 +1,8 @@
 Projeto desenvolvido como forma de avaliação técnica para DBC Company.
 
+Para execução:
+- É necessário a utilização de alguma IDE, Maven instalado e "annotation processing" ativado.
+- Ao abrir o projeto execute a classe AssembleiaDbcApplication.java
 
 Do projeto:
 
@@ -18,6 +21,8 @@ Do projeto:
   - Cadastrar um novo voto
   - Validação de CPF
   - Validação de associado cadastrado na base
+  - Buscar um associado por CPF
+  - Buscar uma pauta por ID
   
 - Serviços
   Ao acessar "http://localhost:8081/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config", terás acesso a todas as features implementadas citadas acima.
@@ -37,7 +42,8 @@ Do projeto:
   - Cadastrar um voto com o id do associado e id da assembleia.
 
   
-  
+- Testes unitários
+  - Todos os testes unitários estão com 100% de cobertura
   
   
   
